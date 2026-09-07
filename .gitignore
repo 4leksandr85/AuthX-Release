@@ -1,2 +1,29 @@
 *.pdb
 DiskDefragPro.exe
+wv2data/EBWebView/BrowserMetrics/
+wv2data/EBWebView/Crashpad/
+wv2data/EBWebView/CrashpadMetrics-active.pma
+wv2data/EBWebView/Breadcrumbs
+wv2data/EBWebView/Default/DawnGraphiteCache/
+wv2data/EBWebView/Default/DawnWebGPUCache/
+wv2data/EBWebView/Default/GPUCache/
+wv2data/EBWebView/Default/GrShaderCache/
+wv2data/EBWebView/Default/ShaderCache/
+wv2data/EBWebView/Default/History
+wv2data/EBWebView/Default/DIPS
+wv2data/EBWebView/Default/DIPS-wal
+wv2data/EBWebView/Default/Preferences
+wv2data/EBWebView/Default/Secure Preferences
+wv2data/EBWebView/Default/favorites_diagnostic.log
+wv2data/EBWebView/Default/EdgeSessions/
+wv2data/EBWebView/Default/Session Storage/
+wv2data/EBWebView/Default/Local Storage/
+wv2data/EBWebView/Default/Extension State/
+wv2data/EBWebView/Default/Site Characteristics Database/
+wv2data/EBWebView/Default/Sync Data/
+wv2data/EBWebView/Default/shared_proto_db/
+wv2data/EBWebView/GrShaderCache/
+wv2data/EBWebView/ShaderCache/
+wv2data/EBWebView/Local State
+wv2data/EBWebView/Variations
+wv2data/EBWebView/lockfile
