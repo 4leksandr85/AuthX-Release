@@ -1,0 +1,66 @@
+2026-09-06 23:55:12.050: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-06 23:55:12.050: [INFO] Profiles total count: 1
+2026-09-06 23:55:12.050: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=null
+2026-09-06 23:55:12.050: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-06 23:55:12.050: [INFO] OnDoneLoading sync enabled: 0
+2026-09-06 23:55:12.050: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-06 23:55:12.050: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-06 23:55:12.050: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:18:40.076: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:18:40.076: [INFO] Profiles total count: 1
+2026-09-07 16:18:40.076: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=null
+2026-09-07 16:18:40.076: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:18:40.076: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 16:18:40.076: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 16:18:40.076: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 16:18:40.076: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:21:48.210: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:28:09.041: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:28:09.042: [INFO] Profiles total count: 1
+2026-09-07 16:28:09.042: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=null
+2026-09-07 16:28:09.042: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:28:09.042: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 16:28:09.042: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 16:28:09.042: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 16:28:09.042: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:32:43.324: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:41:56.283: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:41:56.283: [INFO] Profiles total count: 1
+2026-09-07 16:41:56.283: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T16:32:18.519Z
+2026-09-07 16:41:56.283: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 16:41:56.283: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T16:32:18.519Z
+2026-09-07 16:41:56.283: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 16:41:56.283: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 16:41:56.283: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 16:41:56.283: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 16:42:47.242: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 18:55:52.259: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 18:55:52.259: [INFO] Profiles total count: 1
+2026-09-07 18:55:52.259: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T16:42:17.387Z
+2026-09-07 18:55:52.259: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 18:55:52.259: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T16:42:17.387Z
+2026-09-07 18:55:52.259: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 18:55:52.259: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 18:55:52.259: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 18:55:52.259: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 19:14:12.832: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 19:16:47.896: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 19:16:47.896: [INFO] Profiles total count: 1
+2026-09-07 19:16:47.896: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T19:13:38.708Z
+2026-09-07 19:16:47.896: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 19:16:47.896: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T19:13:38.708Z
+2026-09-07 19:16:47.896: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 19:16:47.896: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 19:16:47.896: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 19:16:47.896: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 19:21:00.603: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 19:21:18.625: [INFO] CurrentProfilePath: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 19:21:18.625: [INFO] Profiles total count: 1
+2026-09-07 19:21:18.625: [INFO] Profile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T19:20:30.923Z
+2026-09-07 19:21:18.625: [INFO] LastUsedProfileDir: C:\AuthX External\release\wv2data\EBWebView\Default
+2026-09-07 19:21:18.625: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\AuthX External\release\wv2data\EBWebView\Default lastActive=2026-09-07T19:20:30.923Z
+2026-09-07 19:21:18.625: [INFO] OnDoneLoading sync enabled: 0
+2026-09-07 19:21:18.625: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-07 19:21:18.625: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-07 19:21:18.625: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-07 19:26:49.200: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
