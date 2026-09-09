@@ -1,5 +1,9 @@
 *.pdb
 DiskDefragPro.exe
+authx_diag.log
+wv2data/EBWebView/VariationsRuntimeSeedV2
+wv2data/EBWebView/VariationsSafeSeedV2
+wv2data/EBWebView/VariationsSeedV2
 wv2data/EBWebView/BrowserMetrics/
 wv2data/EBWebView/Crashpad/
 wv2data/EBWebView/CrashpadMetrics-active.pma
