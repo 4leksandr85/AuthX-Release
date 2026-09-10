@@ -144,7 +144,9 @@ html, body { height: 100%; background: var(--bg-window); color: var(--text);
   font-family: inherit; outline: none; user-select: none; width: 100%; }
 .cdd-trigger:hover { border-color: var(--border-strong); color: var(--text); }
 .cdd.open .cdd-trigger { border-color: var(--text); color: var(--text); }
-.cdd-caret { font-size: 8px; opacity: 0.6; transition: transform 0.15s; }
+.cdd-caret { width: 0; height: 0; border-left: 4px solid transparent;
+  border-right: 4px solid transparent; border-top: 5px solid currentColor;
+  opacity: 0.7; transition: transform 0.15s; flex-shrink: 0; }
 .cdd.open .cdd-caret { transform: rotate(180deg); }
 .cdd-menu { position: fixed; min-width: 140px;
   background: #1a1a20; border: 1px solid #3a3a44; border-radius: 6px;
@@ -299,7 +301,10 @@ html, body { height: 100%; background: var(--bg-window); color: var(--text);
       <div class="rail-item" data-tab="movement"><span class="num">04</span><span class="name">Movement</span></div>
       <div class="rail-item" data-tab="players"><span class="num">05</span><span class="name">Players</span><span class="badge" id="badge-players">0</span></div>
       <div class="rail-item" data-tab="ragebot"><span class="num">06</span><span class="name">RageBot</span><span class="badge" id="badge-ragebot">-</span></div>
-      <div class="rail-item" data-tab="settings"><span class="num">07</span><span class="name">Settings</span></div>
+      <div class="rail-item" data-tab="skins"><span class="num">07</span><span class="name">Skins</span></div>
+      <div class="rail-item" data-tab="world"><span class="num">08</span><span class="name">World</span></div>
+      <div class="rail-item" data-tab="configs"><span class="num">09</span><span class="name">Configs</span></div>
+      <div class="rail-item" data-tab="settings"><span class="num">10</span><span class="name">Settings</span></div>
       <div class="rail-spacer"></div>
       <div class="rail-foot">
         <div class="stat"><span class="k">Session</span><span class="v" id="stat-session">00:00:00</span></div>
@@ -411,9 +416,11 @@ html, body { height: 100%; background: var(--bg-window); color: var(--text);
             <div class="grid-2">
               <div class="cell">
                 <div class="row"><div class="row-label"><span class="n">No Recoil</span><span class="d">Cancels camera kick while firing</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.no_recoil"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Anti-Katana</span><span class="d">Prioritize katana users when targeting</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.anti_katana"></div></div></div>
               </div>
               <div class="cell">
                 <div class="row"><div class="row-label"><span class="n">No Spread</span><span class="d">Zeros weapon Spread/Deviation values</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.no_spread"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Anti-Riot Shield</span><span class="d">Aim breaks shield before target's head</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.anti_riotshield"></div></div></div>
               </div>
             </div>
           </div>
@@ -628,9 +635,154 @@ html, body { height: 100%; background: var(--bg-window); color: var(--text);
         </div>
       </div>
 
+      <!-- SKINS (Rivals) -->
+      <div class="panel" id="panel-skins">
+        <div class="page-header">
+          <div><div class="page-title"><span class="num">07</span> Skin Changer</div>
+            <div class="page-desc">Rivals — every weapon, every skin, every wrap. Pick a weapon on the left, its skin + wrap on the right. Client-visible only.</div></div>
+          <div class="master-toggle"><span class="label">Enabled</span><div class="toggle" data-key="skinchanger.enabled"></div></div>
+        </div>
+        <div class="page-body">
+          <div class="section">
+            <div class="section-head"><span class="title">Loadout</span><span class="line"></span></div>
+            <div style="display: grid; grid-template-columns: 260px 1fr; gap: 14px; min-height: 320px;">
+              <!-- Weapon list -->
+              <div style="background: var(--bg-surface); border: 1px solid var(--border-faint); border-radius: 8px; padding: 8px; overflow-y: auto; max-height: 380px;">
+                <input id="weap-search" placeholder="Search weapon…" style="width:100%; background:var(--bg-input); border:1px solid var(--border); border-radius:5px; padding:6px 10px; font-size:11px; color:var(--text); font-family:inherit; outline:none; margin-bottom:6px;">
+                <div id="weap-list" style="display:flex; flex-direction:column; gap:2px;"></div>
+              </div>
+              <!-- Skin / Wrap picker for selected weapon -->
+              <div style="background: var(--bg-surface); border: 1px solid var(--border-faint); border-radius: 8px; padding: 14px;">
+                <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-faint); font-weight:700;">Selected</div>
+                <div id="sel-weapon-name" style="font-size:22px; font-weight:600; color:var(--text); margin: 4px 0 14px;">—</div>
+                <div class="row" style="margin-bottom:10px;">
+                  <div class="row-label"><span class="n">Skin</span></div>
+                  <div class="row-ctrl">
+                    <select id="sel-skin" class="dropdown"></select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="row-label"><span class="n">Wrap</span></div>
+                  <div class="row-ctrl">
+                    <select id="sel-wrap" class="dropdown"></select>
+                  </div>
+                </div>
+                <div style="margin-top: 18px; font-size: 10px; color: var(--text-mute); line-height: 1.5;">
+                  Applies while <b>Enabled</b> is on and the weapon is equipped. If a skin doesn't own a texture on some part, the part keeps its default look — that's expected. Toggle Material / Custom Colour below to force-override.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-head"><span class="title">Overrides</span><span class="line"></span></div>
+            <div class="grid-2">
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Custom Colour</span><span class="d">Paints every part on the equipped weapon</span></div><div class="row-ctrl"><input type="color" class="color-chip" data-key="skinchanger.color"><div class="toggle" data-key="skinchanger.color_override"></div></div></div>
+              </div>
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Material Override</span></div><div class="row-ctrl"><div class="toggle" data-key="skinchanger.material_override"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Material Type</span></div><div class="row-ctrl">
+                  <select class="dropdown" data-key="skinchanger.material_index">
+                    <option value="0">Plastic</option>
+                    <option value="1">Smooth Plastic</option>
+                    <option value="2">Metal</option>
+                    <option value="3">Neon</option>
+                    <option value="4">Glass</option>
+                    <option value="5">Fabric</option>
+                    <option value="6">Wood</option>
+                  </select>
+                </div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORLD -->
+      <div class="panel" id="panel-world">
+        <div class="page-header">
+          <div><div class="page-title"><span class="num">08</span> World</div>
+            <div class="page-desc">Environment overrides — skybox, map colour, ambient tint.</div></div>
+        </div>
+        <div class="page-body">
+          <div class="section">
+            <div class="section-head"><span class="title">Skybox</span><span class="line"></span></div>
+            <div class="grid-2">
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Custom Skybox</span></div><div class="row-ctrl"><div class="toggle" data-key="world.custom_skybox"></div></div></div>
+              </div>
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Preset</span></div><div class="row-ctrl">
+                  <select class="dropdown" data-key="world.skybox_preset">
+                    <option value="0">Purple Nebula</option>
+                    <option value="1">Deep Space</option>
+                    <option value="2">Blood Red</option>
+                    <option value="3">Sunset Cinematic</option>
+                    <option value="4">Pure Black</option>
+                    <option value="5">White Void</option>
+                  </select>
+                </div></div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-head"><span class="title">Map Colour</span><span class="line"></span></div>
+            <div class="grid-2">
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Enabled</span><span class="d">Tints every part in the workspace</span></div><div class="row-ctrl"><div class="toggle" data-key="world.map_color_enabled"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Colour</span></div><div class="row-ctrl"><input type="color" class="color-chip" data-key="world.map_color"></div></div>
+                <div class="row"><div class="row-label"><span class="n">Intensity</span></div><div class="row-ctrl"><div class="slider" data-key="world.map_intensity" data-min="0" data-max="1" data-float></div><span class="slider-val" id="v-world.map_intensity">-</span></div></div>
+              </div>
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Ambient</span><span class="d">Also tints Lighting.OutdoorAmbient</span></div><div class="row-ctrl"><div class="toggle" data-key="world.affect_ambient"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Fog</span><span class="d">Also tints Lighting.FogColor</span></div><div class="row-ctrl"><div class="toggle" data-key="world.affect_fog"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIGS -->
+      <div class="panel" id="panel-configs">
+        <div class="page-header">
+          <div><div class="page-title"><span class="num">09</span> Configs</div>
+            <div class="page-desc">Save, load and manage your feature presets.</div></div>
+        </div>
+        <div class="page-body">
+          <div class="section">
+            <div class="section-head"><span class="title">Current</span><span class="line"></span></div>
+            <div class="grid-2">
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Config Name</span></div><div class="row-ctrl">
+                  <input id="cfg-name" type="text" class="ccp-hex" placeholder="my_config" style="width: 180px; text-transform: none;">
+                </div></div>
+                <div class="row"><div class="row-label"><span class="n">Autoload on Launch</span></div><div class="row-ctrl"><div class="toggle" data-key="configs.autoload_on_launch"></div></div></div>
+              </div>
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Save</span><span class="d">Writes current toggles to disk</span></div><div class="row-ctrl">
+                  <button class="config-btn primary" onclick="cfgAction('save')">Save</button>
+                </div></div>
+                <div class="row"><div class="row-label"><span class="n">Load</span><span class="d">Overwrites current with the named config</span></div><div class="row-ctrl">
+                  <button class="config-btn" onclick="cfgAction('load')">Load</button>
+                </div></div>
+                <div class="row"><div class="row-label"><span class="n">Delete</span></div><div class="row-ctrl">
+                  <button class="config-btn" onclick="cfgAction('delete')">Delete</button>
+                </div></div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-head"><span class="title">Available</span><span class="line"></span></div>
+            <div id="cfg-list" style="display: flex; flex-direction: column; gap: 6px; padding: 4px 0;">
+              <span style="color: var(--text-faint); font-size: 11px;">No configs saved yet.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="panel" id="panel-settings">
         <div class="page-header">
-          <div><div class="page-title"><span class="num">07</span> Settings</div>
+          <div><div class="page-title"><span class="num">10</span> Settings</div>
             <div class="page-desc">Menu, keybinds and system preferences.</div></div>
         </div>
         <div class="page-body">
@@ -777,7 +929,7 @@ document.querySelectorAll('select.dropdown[data-key]').forEach(sel => {
   labelEl.className = 'cdd-label';
   const caret = document.createElement('span');
   caret.className = 'cdd-caret';
-  caret.textContent = '▼';
+  // Caret is drawn via CSS borders — no text content needed.
   trigger.appendChild(labelEl);
   trigger.appendChild(caret);
   const menu = document.createElement('div');
@@ -1014,10 +1166,11 @@ document.querySelectorAll('button.kbd[data-hotkey]').forEach(b => {
       }
       if (vk) {
         b.textContent = nameKey(vk);
-        // Default to TOGGLE (0) — hacks like Speed/Fly/Jump activate on
-        // press, deactivate on next press. HOLD (1) would only run the
-        // feature while the key was down, breaking WASD movement.
-        setKey(b.dataset.hotkey, { key: vk, type: 0 });
+        // Send ONLY the key. The C++ side preserves the keybind's `type`
+        // (TOGGLE for movement, HOLD for aim/fire) — set once at boot in
+        // globals.h. That way rebinding aimbot to another key keeps HOLD
+        // semantics, and rebinding speed keeps TOGGLE.
+        setKey(b.dataset.hotkey, { key: vk });
         b.classList.remove('listening');
         window.removeEventListener('keydown', capture, true);
         window.removeEventListener('mousedown', capture, true);
@@ -1031,7 +1184,10 @@ document.querySelectorAll('button.kbd[data-hotkey]').forEach(b => {
 // ─── Tab switching ────────────────────────────────────────────────
 const CRUMBS = { aimbot:['Combat','Aimbot'], silent:['Combat','Silent'],
   visual:['Rendering','Visual'], movement:['World','Movement'],
-  players:['Server','Players'], ragebot:['Combat','RageBot'], settings:['System','Settings'] };
+  players:['Server','Players'], ragebot:['Combat','RageBot'],
+  skins:['Rivals','Skin Changer'],
+  world:['Environment','World'], configs:['System','Configs'],
+  settings:['System','Settings'] };
 document.querySelectorAll('.rail-item').forEach(r => {
   r.addEventListener('click', () => {
     document.querySelectorAll('.rail-item').forEach(x => x.classList.remove('active'));
@@ -1085,6 +1241,183 @@ function renderPlayers() {
 function escapeHtml(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 document.getElementById('player-search').addEventListener('input', renderPlayers);
 
+// ─── Skin Changer (Rivals — weapon → skin + wrap picker) ────────
+let skinCatalog = null;    // [{name, skins: [...]}, ...]
+let wrapCatalog = null;    // [name, ...]
+let skinSelection = [];    // parallel to skinCatalog: [{skin, wrap}]
+let currentWeaponIdx = 0;
+
+function renderWeaponList(filter) {
+  if (!skinCatalog) return;
+  const el = document.getElementById('weap-list');
+  if (!el) return;
+  el.innerHTML = '';
+  const q = (filter || '').toLowerCase();
+  skinCatalog.forEach((w, i) => {
+    if (q && !w.name.toLowerCase().includes(q)) return;
+    const row = document.createElement('div');
+    const active = i === currentWeaponIdx;
+    row.style.cssText = `padding:8px 10px; border-radius:5px; cursor:pointer; font-size:12px;
+      display:flex; justify-content:space-between; align-items:center;
+      background:${active ? 'rgba(255,255,255,0.08)' : 'transparent'};
+      color:${active ? 'var(--text)' : 'var(--text-dim)'};
+      border-left: 2px solid ${active ? '#fff' : 'transparent'};`;
+    const sel = skinSelection[i] || {skin:0, wrap:0};
+    const skinName = (sel.skin > 0 && w.skins[sel.skin]) ? w.skins[sel.skin] : '';
+    row.innerHTML = `<span>${w.name}</span><span style="font-family:Consolas,monospace; font-size:10px; color:var(--text-faint);">${skinName || '·'}</span>`;
+    row.addEventListener('click', () => { currentWeaponIdx = i; setKey('skinchanger.current_weapon', i); renderWeaponList(document.getElementById('weap-search').value); renderSelectedPanel(); });
+    el.appendChild(row);
+  });
+}
+function fillSelectFromArray(sel, arr) {
+  sel.innerHTML = '';
+  arr.forEach((name, i) => {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = name;
+    sel.appendChild(o);
+  });
+}
+function renderSelectedPanel() {
+  if (!skinCatalog || !wrapCatalog) return;
+  const w = skinCatalog[currentWeaponIdx]; if (!w) return;
+  const cur = skinSelection[currentWeaponIdx] || {skin:0, wrap:0};
+
+  document.getElementById('sel-weapon-name').textContent = w.name;
+
+  // Re-populate the native <select>s and force a re-conversion via the custom
+  // dropdown rebuild helper. Since these were converted at page load, we
+  // rebuild the .cdd wrapper for each.
+  const skinSelWrap = document.querySelector('.cdd[data-native-id="sel-skin"]') || document.getElementById('sel-skin');
+  const wrapSelWrap = document.querySelector('.cdd[data-native-id="sel-wrap"]') || document.getElementById('sel-wrap');
+  rebuildLoadoutDropdown('sel-skin', w.skins, cur.skin, (idx) => { skinSelection[currentWeaponIdx].skin = idx; send({op:'skin_set', weapon: currentWeaponIdx, skin: idx}); renderWeaponList(document.getElementById('weap-search').value); });
+  rebuildLoadoutDropdown('sel-wrap', wrapCatalog, cur.wrap, (idx) => { skinSelection[currentWeaponIdx].wrap = idx; send({op:'skin_set', weapon: currentWeaponIdx, wrap: idx}); });
+}
+function rebuildLoadoutDropdown(nativeId, options, selectedIdx, onPick) {
+  // Locate or (re)create a .cdd wrapper adjacent to the native select id.
+  let native = document.getElementById(nativeId);
+  let wrap;
+  if (native && native.tagName === 'SELECT') {
+    // First time: convert native <select> into custom .cdd
+    wrap = document.createElement('div');
+    wrap.className = 'cdd';
+    wrap.dataset.nativeId = nativeId;
+    const trigger = document.createElement('div');
+    trigger.className = 'cdd-trigger';
+    const label = document.createElement('span'); label.className='cdd-label';
+    const caret = document.createElement('span'); caret.className='cdd-caret';
+    trigger.appendChild(label); trigger.appendChild(caret);
+    const menu = document.createElement('div'); menu.className = 'cdd-menu';
+    wrap.appendChild(trigger); wrap.appendChild(menu);
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.cdd.open').forEach(x => { if (x !== wrap) x.classList.remove('open'); });
+      const opening = !wrap.classList.contains('open');
+      wrap.classList.toggle('open');
+      if (opening) {
+        const tr = trigger.getBoundingClientRect();
+        const menuW = Math.max(tr.width, 200);
+        const menuH = Math.min(280, options.length * 34 + 8);
+        const vw = window.innerWidth, vh = window.innerHeight;
+        let left = tr.right - menuW;
+        let top = tr.bottom + 4;
+        if (top + menuH > vh - 8) top = tr.top - menuH - 4;
+        if (top < 8) top = 8;
+        if (left < 8) left = 8;
+        if (left + menuW > vw - 8) left = vw - menuW - 8;
+        menu.style.left = left + 'px'; menu.style.top = top + 'px'; menu.style.minWidth = menuW + 'px';
+      }
+    });
+    menu.addEventListener('click', (e) => e.stopPropagation());
+    native.replaceWith(wrap);
+  } else {
+    wrap = document.querySelector('.cdd[data-native-id="' + nativeId + '"]');
+    if (!wrap) return;
+  }
+  const trigger = wrap.querySelector('.cdd-trigger');
+  const label = wrap.querySelector('.cdd-label');
+  const menu = wrap.querySelector('.cdd-menu');
+
+  menu.innerHTML = '';
+  options.forEach((name, i) => {
+    const item = document.createElement('div');
+    item.className = 'cdd-opt' + (i === selectedIdx ? ' selected' : '');
+    item.textContent = name;
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      wrap.querySelectorAll('.cdd-opt').forEach(x => x.classList.remove('selected'));
+      item.classList.add('selected');
+      label.textContent = name;
+      wrap.classList.remove('open');
+      onPick(i);
+    });
+    menu.appendChild(item);
+  });
+  label.textContent = options[selectedIdx] || options[0] || '';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const search = document.getElementById('weap-search');
+  if (search) search.addEventListener('input', (e) => renderWeaponList(e.target.value));
+});
+
+// ─── Configs (backend routes via op:'config') ────────────────────
+// Bumped by the C++ side each time a load completes; the JS uses it as an
+// edge trigger to refresh the whole UI from the freshly-loaded globals.
+let lastLoadFlag = 0;
+function cfgAction(action) {
+  const name = (document.getElementById('cfg-name').value || '').trim() || 'default';
+  send({op:'config', action: action, name: name});
+  // Saving with Autoload on Launch checked → also persist the autoload target
+  // so the backend loads it on next launch (the C++ side also does this in
+  // its save handler, but sending here covers the case where the user only
+  // toggles autoload later without re-saving).
+  if (action === 'save') {
+    const toggle = document.querySelector('.toggle[data-key="configs.autoload_on_launch"]');
+    if (toggle && toggle.classList.contains('on')) {
+      send({op:'config', action:'set_autoload', name: name});
+    }
+  }
+}
+// When the Autoload toggle flips ON, immediately persist the current name.
+document.addEventListener('DOMContentLoaded', () => {
+  const t = document.querySelector('.toggle[data-key="configs.autoload_on_launch"]');
+  if (t) {
+    t.addEventListener('click', () => {
+      // Fires AFTER the generic toggle handler flips .classList.on
+      setTimeout(() => {
+        if (t.classList.contains('on')) {
+          const nm = (document.getElementById('cfg-name').value || '').trim() || 'default';
+          send({op:'config', action:'set_autoload', name: nm});
+        }
+      }, 0);
+    });
+  }
+});
+function renderConfigList(list) {
+  const el = document.getElementById('cfg-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (!list || !list.length) {
+    el.innerHTML = '<span style="color: var(--text-faint); font-size: 11px;">No configs saved yet.</span>';
+    return;
+  }
+  list.forEach(n => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; align-items:center; gap:10px; padding:8px 10px; background: var(--bg-input); border:1px solid var(--border); border-radius:6px;';
+    row.innerHTML = `<span style="flex:1; font-size:12px; color:var(--text);">${n}</span>`;
+    const btnLoad = document.createElement('button');
+    btnLoad.className = 'config-btn';
+    btnLoad.textContent = 'Load';
+    btnLoad.onclick = () => { document.getElementById('cfg-name').value = n; send({op:'config', action:'load', name: n}); };
+    const btnDel = document.createElement('button');
+    btnDel.className = 'config-btn';
+    btnDel.textContent = 'Delete';
+    btnDel.onclick = () => send({op:'config', action:'delete', name: n});
+    row.appendChild(btnLoad);
+    row.appendChild(btnDel);
+    el.appendChild(row);
+  });
+}
+
 // ─── Titlebar drag → asks C++ to run native window drag ─────────
 document.getElementById('tb-drag').addEventListener('mousedown', (e) => {
   if (e.button !== 0) return;
@@ -1096,7 +1429,17 @@ document.getElementById('tb-drag').addEventListener('mousedown', (e) => {
 // ─── State-push handler ──────────────────────────────────────────
 window.chrome.webview.addEventListener('message', e => {
   const msg = e.data;
-  if (msg.type === 'initial') applyInitial(msg.values);
+  if (msg.type === 'initial') {
+    applyInitial(msg.values);
+    // Skin changer catalog + selections come in the same initial payload.
+    if (msg.skin_catalog) skinCatalog = msg.skin_catalog;
+    if (msg.wrap_catalog) wrapCatalog = msg.wrap_catalog;
+    if (msg.skin_selection) skinSelection = msg.skin_selection;
+    if (skinCatalog && wrapCatalog) {
+      renderWeaponList('');
+      renderSelectedPanel();
+    }
+  }
   else if (msg.type === 'state') applyState(msg);
 });
 
@@ -1106,6 +1449,18 @@ function applyState(s) {
   if (s.game) document.getElementById('st-game').textContent = s.game;
   if (s.target) document.getElementById('st-target').textContent = s.target;
   if (s.players) { cachedPlayers = s.players; renderPlayers(); }
+  if (s.configs) renderConfigList(s.configs);
+  // NOTE: intentionally do NOT overwrite the config-name input from state
+  // pushes. The input is authoritative on the client; only Load/Save flows
+  // (below) update it, so a state tick can't reset the user's typed name.
+  if (s.current_config && s.config_load_flag && s.config_load_flag !== lastLoadFlag) {
+    lastLoadFlag = s.config_load_flag;
+    const cn = document.getElementById('cfg-name');
+    if (cn) cn.value = s.current_config;
+    // A load happened — reset UI to reflect the fresh values.
+    // The backend also sends a full snapshot right after; we don't need
+    // to walk it ourselves.
+  }
 }
 
 function applyInitial(v) {
