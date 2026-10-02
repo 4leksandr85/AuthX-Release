@@ -584,6 +584,19 @@ html, body { height: 100%; background: var(--bg-window); color: var(--text);
               </div>
             </div>
           </div>
+          <div class="section">
+            <div class="section-head"><span class="title">Chaos</span><span class="line"></span></div>
+            <div class="grid-2">
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Hitbox Expander</span><span class="d">Bloat enemy collision volumes — meshes stay visually normal</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.hitbox_expander"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Expander Size</span><span class="d">Multiplier applied to Head / Torso / HRP</span></div><div class="row-ctrl"><div class="slider" data-key="combat.hitbox_expander_size" data-min="1" data-max="20" data-step="0.5"></div><span class="slider-val" id="v-combat.hitbox_expander_size">-</span></div></div>
+              </div>
+              <div class="cell">
+                <div class="row"><div class="row-label"><span class="n">Fling Mode: Self-Ram</span><span class="d">On: teleport-and-slam (server-side fling). Off: velocity bomb (local view)</span></div><div class="row-ctrl"><div class="toggle" data-key="combat.flinger_use_selfram"></div></div></div>
+                <div class="row"><div class="row-label"><span class="n">Fling All Enemies</span><span class="d">One-shot: launch every enemy player on the server</span></div><div class="row-ctrl"><button class="pl-action" id="btn-fling-all" style="color:#ff6a6a;padding:6px 14px;font-weight:600">FLING ALL</button></div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1226,6 +1239,7 @@ function renderPlayers() {
         <button class="pl-action" data-act="teleport">TP</button>
         <button class="pl-action" data-act="spectate">Spec</button>
         <button class="pl-action" data-act="target">Target</button>
+        <button class="pl-action" data-act="fling" style="color:#ff6a6a">Fling</button>
         <button class="pl-action" data-act="copy_name">Copy</button>
       </div>`;
     div.addEventListener('click', () => { selectedPlayer = p.name; renderPlayers(); });
@@ -1242,6 +1256,11 @@ function renderPlayers() {
 }
 function escapeHtml(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 document.getElementById('player-search').addEventListener('input', renderPlayers);
+
+// Fling All — one-shot pulse to the C++ flinger worker.
+document.getElementById('btn-fling-all')?.addEventListener('click', () => {
+  send({op:'fling_all'});
+});
 
 // ─── Skin Changer (Rivals — weapon → skin + wrap picker) ────────
 let skinCatalog = null;    // [{name, skins: [...]}, ...]
